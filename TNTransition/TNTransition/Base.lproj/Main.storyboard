@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="WXV-sC-EPU">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="TNTransition" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2" translatesAutoresizingMaskIntoConstraints="NO" id="yEu-5p-su0">
+                                <rect key="frame" x="0.0" y="64" width="174" height="140"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="iOe-Hp-Ce8" appends="YES" id="2Em-sb-w8T"/>
+                                </connections>
+                            </imageView>
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1" translatesAutoresizingMaskIntoConstraints="NO" id="ytd-cB-OcE">
+                                <rect key="frame" x="67" y="397" width="128" height="128"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="ytd-cB-OcE" secondAttribute="height" multiplier="1:1" id="OeA-JH-yTE"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Cfo-g7-6pt" appends="YES" id="v0M-k5-bgu"/>
+                                </connections>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VTY-dc-hB7">
+                                <rect key="frame" x="170" y="318" width="35" height="30"/>
+                                <state key="normal" title="Page"/>
+                                <connections>
+                                    <action selector="JumpToDetailByPage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="AOG-Wd-z2D"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="yEu-5p-su0" secondAttribute="bottom" constant="463" id="0Lu-Lr-4bS"/>
+                            <constraint firstItem="yEu-5p-su0" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="H1D-J4-2GS"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="yEu-5p-su0" secondAttribute="trailing" constant="201" id="Tf6-jj-vfb"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ytd-cB-OcE" secondAttribute="bottom" constant="142" id="Z4J-Ec-xPy"/>
+                            <constraint firstItem="ytd-cB-OcE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="67" id="eFh-12-coC"/>
+                            <constraint firstItem="VTY-dc-hB7" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="n81-L4-Zsq"/>
+                            <constraint firstItem="ytd-cB-OcE" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="333" id="p0P-kD-qfE"/>
+                            <constraint firstItem="yEu-5p-su0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="vE9-Lb-kuu"/>
+                            <constraint firstItem="VTY-dc-hB7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xRC-mg-RN1"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="s50-qY-LhX"/>
+                    <connections>
+                        <outlet property="circleFromView" destination="ytd-cB-OcE" id="JOZ-zA-4jh"/>
+                        <outlet property="fromView" destination="yEu-5p-su0" id="lfA-CM-JTp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="iOe-Hp-Ce8">
+                    <connections>
+                        <action selector="JumpToDetailVC:" destination="BYZ-38-t0r" id="god-LQ-5zu"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="Cfo-g7-6pt">
+                    <connections>
+                        <action selector="JumpToDetailByCircle:" destination="BYZ-38-t0r" id="9e9-Ij-gXb"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="1125.5999999999999" y="97.601199400299862"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Lln-35-qTm">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WXV-sC-EPU" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Bxp-jh-dV9">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="RdF-ZJ-2ts"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lgp-xS-rst" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="489.60000000000002" y="92.653673163418304"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="1" width="2000" height="900"/>
+        <image name="2" width="1400" height="865"/>
+    </resources>
+</document>
