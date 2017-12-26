@@ -8,6 +8,13 @@
 
 import UIKit
 
+//the runtime key
+private var typeKey: Void?
+private var fromViewKey: Void?
+private var toViewKey: Void?
+private var transitionContextKey: Void?
+
+
 //type
 enum TNTransitionType {
     case magic(reverse: Bool)
@@ -15,76 +22,45 @@ enum TNTransitionType {
     case circle(reverse: Bool)
 }
 
-//the runtime key
-fileprivate struct TNRunKey {
-    static let typeKey = UnsafeRawPointer(bitPattern: "type".hashValue)
-    static let fromViewKey = UnsafeRawPointer(bitPattern: "fromView".hashValue)
-    static let toViewKey = UnsafeRawPointer(bitPattern: "toView".hashValue)
-    static let transitionContext = UnsafeRawPointer(bitPattern: "transitionContext".hashValue)
+public final class TNTransition<Base> {
+    public let base: Base
+    public init(_ base: Base) {
+        self.base = base
+    }
 }
 
-extension UIViewController {
-    
-    //add property by runtime
-    fileprivate var tn_type: TNTransitionType {
-        set {
-            objc_setAssociatedObject(self, TNRunKey.typeKey!, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
-        }
-        
-        get{
-            return objc_getAssociatedObject(self, TNRunKey.typeKey!) as! TNTransitionType
-        }
-    }
-    
-    fileprivate var tn_toViewKeyPath: String {
-        set {
-            objc_setAssociatedObject(self, TNRunKey.toViewKey!, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
-        }
-        
-        get{
-            return objc_getAssociatedObject(self, TNRunKey.toViewKey!) as! String
-        }
-    }
-    
-    fileprivate var tn_fromView: UIView {
-        set {
-            objc_setAssociatedObject(self, TNRunKey.fromViewKey!, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-        
-        get{
-            return objc_getAssociatedObject(self, TNRunKey.fromViewKey!) as! UIView
-        }
-    }
-    
-    fileprivate var tn_transitionContext: UIViewControllerContextTransitioning {
-        set {
-            objc_setAssociatedObject(self, TNRunKey.transitionContext!, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-        
-        get {
-            return objc_getAssociatedObject(self, TNRunKey.transitionContext!) as! UIViewControllerContextTransitioning
-        }
-    }
+public protocol TNCompatible {
+    associatedtype CompatibleType
+    var tn: CompatibleType { get }
+}
+
+extension TNCompatible {
+    public var tn: TNTransition<Self> { get { return TNTransition(self) } }
+}
+
+extension UIViewController: TNCompatible {}
+
+extension TNTransition where Base: UIViewController {
     
     //set delegate
-    func tn_setup() {
-        guard let navigationController = navigationController else { return }
-        navigationController.delegate = self
+    func setup() {
+        guard let navigationController = base.navigationController else { return }
+        navigationController.delegate = base
     }
     
     /// setup the transition of viewController
     /// - Parameter type: the viewController transition of type
     /// - Parameter fromView: the animate view of fromViewController
     /// - Parameter toViewKeyPath: the keyPath of toViewController
-    func tn_transition(by type: TNTransitionType, from fromView: UIView? = nil, to toViewKeyPath: String? = nil) {
+    func transition(by type: TNTransitionType, from fromView: UIView? = nil, to toViewKeyPath: String? = nil) {
         
-        tn_type = type
+        base.tn_type = type
         
         guard fromView != nil else { return }
-        tn_fromView = fromView!
+        base.tn_fromView = fromView!
         
         guard toViewKeyPath != nil else { return }
-        tn_toViewKeyPath = toViewKeyPath!
+        base.tn_toViewKeyPath = toViewKeyPath!
     }
     
     //transition by magic
@@ -113,7 +89,7 @@ extension UIViewController {
     //transition by circle
     fileprivate func circle(by: Bool, using: UIViewControllerContextTransitioning) {
         print("page: " + "\(by)")
-        tn_transitionContext = using
+         base.tn_transitionContext = using
         if by {
             circleReverse(using: using)
         }else
@@ -126,29 +102,29 @@ extension UIViewController {
     fileprivate func magic(using: UIViewControllerContextTransitioning) {
         guard let toVC = using.viewController(forKey: .to) else { return }
         
-        let toView = toVC.value(forKeyPath: tn_toViewKeyPath) as! UIView
+        let toView = toVC.value(forKeyPath: base.tn_toViewKeyPath) as! UIView
         let containerView = using.containerView
-        guard let snapShotView = tn_fromView.snapshotView(afterScreenUpdates: false) else { return }
-        snapShotView.frame = containerView.convert(tn_fromView.frame, from: tn_fromView.superview)
-        tn_fromView.isHidden = true
+        guard let snapShotView = base.tn_fromView.snapshotView(afterScreenUpdates: false) else { return }
+        snapShotView.frame = containerView.convert(base.tn_fromView.frame, from: base.tn_fromView.superview)
+        base.tn_fromView.isHidden = true
         
         toVC.view.frame = using.finalFrame(for: toVC)
         toVC.view.alpha = 0
-        toVC.tn_fromView = tn_fromView
-        toVC.tn_toViewKeyPath = tn_toViewKeyPath
+        toVC.tn_fromView = base.tn_fromView
+        toVC.tn_toViewKeyPath = base.tn_toViewKeyPath
         
         toView.isHidden = true
         containerView.addSubview(toVC.view)
         containerView.addSubview(snapShotView)
         
-        UIView.animate(withDuration: transitionDuration(using: using), delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1.0, options: .curveLinear, animations: {
+        UIView.animate(withDuration: base.transitionDuration(using: using), delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1.0, options: .curveLinear, animations: {
             containerView.layoutIfNeeded()
             toVC.view.alpha = 1.0
             snapShotView.frame = containerView.convert(toView.frame, from: toView.superview)
             
         }) { (finshed) in
             toView.isHidden = false
-            self.tn_fromView.isHidden = false
+            self.base.tn_fromView.isHidden = false
             snapShotView.removeFromSuperview()
             using.completeTransition(!using.transitionWasCancelled)
         }
@@ -160,7 +136,7 @@ extension UIViewController {
         guard let toVC = using.viewController(forKey: .to) else { return }
         guard let fromVC = using.viewController(forKey: .from) else { return }
         let containerView = using.containerView
-        let fromView = fromVC.value(forKeyPath: tn_toViewKeyPath) as! UIView
+        let fromView = fromVC.value(forKeyPath: base.tn_toViewKeyPath) as! UIView
         guard let snapShotView = fromView.snapshotView(afterScreenUpdates: false) else { return }
         snapShotView.frame = containerView.convert(fromView.frame, from: fromView.superview)
         fromView.isHidden = true
@@ -170,7 +146,7 @@ extension UIViewController {
         containerView.insertSubview(toVC.view, belowSubview: fromVC.view)
         containerView.addSubview(snapShotView)
         
-        UIView.animate(withDuration: transitionDuration(using: using), delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: base.transitionDuration(using: using), delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1.0, options: .curveEaseInOut, animations: {
             fromVC.view.alpha = 0.0
             snapShotView.frame = containerView.convert(originView.frame, from: originView.superview)
         }) { (finished) in
@@ -216,7 +192,7 @@ extension UIViewController {
         
         fromView.addSubview(shadow)
         
-        UIView.animate(withDuration: transitionDuration(using: using), animations: {
+        UIView.animate(withDuration: base.transitionDuration(using: using), animations: {
             fromView.layer.transform = CATransform3DMakeRotation(-.pi/2, 0.0, 1.0, 0.0)
             shadow.alpha = 1.0
         }) { (finished) in
@@ -250,7 +226,7 @@ extension UIViewController {
         toView.layer.position = CGPoint(x: 0, y: UIScreen.main.bounds.midY)
         toView.layer.transform = CATransform3DMakeRotation(-.pi/2, 0, 1.0, 0)
         
-        UIView.animate(withDuration: transitionDuration(using: using), animations: {
+        UIView.animate(withDuration: base.transitionDuration(using: using), animations: {
             toView.layer.transform = CATransform3DMakeRotation(0, 0, 1, 0)
         }) { (finished) in
             toView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -263,7 +239,7 @@ extension UIViewController {
     fileprivate func circle(using: UIViewControllerContextTransitioning) {
         let containerView = using.containerView
         guard let toVC = using.viewController(forKey: .to) else { return }
-        let fromView = tn_fromView
+        let fromView = base.tn_fromView
         guard let snapShotView = fromView.snapshotView(afterScreenUpdates: false) else { return }
         toVC.tn_fromView = snapShotView
         
@@ -282,9 +258,9 @@ extension UIViewController {
         let maskAnimation = CABasicAnimation(keyPath: "path")
         maskAnimation.fromValue = maskStartPath.cgPath
         maskAnimation.toValue = maskEndPath.cgPath
-        maskAnimation.duration = transitionDuration(using: using)
+        maskAnimation.duration = base.transitionDuration(using: using)
         maskAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        maskAnimation.delegate = self
+        maskAnimation.delegate = base
         maskLayer.add(maskAnimation, forKey: "Circle")
         snapShotView.removeFromSuperview()
     }
@@ -310,9 +286,9 @@ extension UIViewController {
         let maskAnimation = CABasicAnimation(keyPath: "path")
         maskAnimation.fromValue = maskStartPath.cgPath
         maskAnimation.toValue = maskEndPath.cgPath
-        maskAnimation.duration = transitionDuration(using: using)
+        maskAnimation.duration = base.transitionDuration(using: using)
         maskAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        maskAnimation.delegate = self
+        maskAnimation.delegate = base
         maskLayer.add(maskAnimation, forKey: "CircleInvert")
         
     }
@@ -384,18 +360,63 @@ extension UIViewController: UIViewControllerAnimatedTransitioning {
         switch tn_type {
             
         case .magic(let reverse):
-            magic(by: reverse, using: transitionContext)
+            tn.magic(by: reverse, using: transitionContext)
             break
         case .page(let reverse):
-            page(by: reverse, using: transitionContext)
+            tn.page(by: reverse, using: transitionContext)
             break
         case .circle(let reverse):
-            circle(by: reverse, using: transitionContext)
+            tn.circle(by: reverse, using: transitionContext)
             break
         }
     }
     
     
+}
+
+//MARK: property
+extension UIViewController {
+    
+    //add property by runtime
+    fileprivate var tn_type: TNTransitionType {
+        set {
+            objc_setAssociatedObject(self, &typeKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+        }
+        
+        get{
+            return objc_getAssociatedObject(self, &typeKey) as! TNTransitionType
+        }
+    }
+    
+    fileprivate var tn_toViewKeyPath: String {
+        set {
+            objc_setAssociatedObject(self, &toViewKey, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
+        }
+        
+        get{
+            return objc_getAssociatedObject(self, &toViewKey) as! String
+        }
+    }
+    
+    fileprivate var tn_fromView: UIView {
+        set {
+            objc_setAssociatedObject(self, &fromViewKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        
+        get{
+            return objc_getAssociatedObject(self, &fromViewKey) as! UIView
+        }
+    }
+    
+    fileprivate var tn_transitionContext: UIViewControllerContextTransitioning {
+        set {
+            objc_setAssociatedObject(self, &transitionContextKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        
+        get {
+            return objc_getAssociatedObject(self, &transitionContextKey) as! UIViewControllerContextTransitioning
+        }
+    }
 }
 
 //MARK: CAAnimationDelegate

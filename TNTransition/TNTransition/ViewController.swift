@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var fromView: UIImageView!
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tn_setup()
+        tn.setup()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,19 +25,19 @@ class ViewController: UIViewController {
     
     @IBAction func JumpToDetailVC(_ sender: UITapGestureRecognizer) {
         let type = TNTransitionType.magic(reverse: false)
-        tn_transition(by: type, from: fromView, to: "toView")
+        tn.transition(by: type, from: fromView, to: "toView")
         push(type: type)
     }
     
     @IBAction func JumpToDetailByCircle(_ sender: UITapGestureRecognizer) {
         let type = TNTransitionType.circle(reverse: false)
-        tn_transition(by: type, from: circleFromView)
+        tn.transition(by: type, from: circleFromView)
         push(type: type)
     }
     
     @IBAction func JumpToDetailByPage(_ sender: Any) {
         let type = TNTransitionType.page(reverse: false)
-        tn_transition(by: type)
+        tn.transition(by: type)
         push(type: type)
     }
     

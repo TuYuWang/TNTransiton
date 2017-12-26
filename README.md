@@ -11,34 +11,31 @@ transition between the two viewController
 //fromViewController
 override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    tn_setup()
+    tn.setup()
 }
 
 //magic
 @IBAction func JumpToDetailByMagic(_ sender: UITapGestureRecognizer) {
-    let type = TNTransitionType.magic(reverse: false)
-    tn_transition(by: type, from: fromView, to: "toView")
+    tn.transition(by: .magic(reverse: false), from: fromView, to: "toView")
     navigationController?.pushViewController(DetailViewController(), animated: true)
 }
 
 //circle
 @IBAction func JumpToDetailByCircle(_ sender: UITapGestureRecognizer) {
-    let type = TNTransitionType.circle(reverse: false)
-    tn_transition(by: type, from: circleFromView)
+    tn.transition(by: .circle(reverse: false), from: circleFromView)
     navigationController?.pushViewController(DetailViewController(), animated: true)
 }
 
 //page
 @IBAction func JumpToDetailByPage(_ sender: Any) {
-    let type = TNTransitionType.page(reverse: false)
-    tn_transition(by: type)
+    tn.transition(by: .page(reverse: false))
     navigationController?.pushViewController(DetailViewController(), animated: true)
 }
 
 //toViewController
 override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    tn_setup()
-    tn_transition(by: .magic(reverse: true))
+    tn.setup()
+    tn.transition(by: .magic(reverse: true))
 }
 ~~~
