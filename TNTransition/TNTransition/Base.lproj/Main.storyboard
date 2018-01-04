@@ -75,7 +75,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1125.5999999999999" y="97.601199400299862"/>
+            <point key="canvasLocation" x="1879" y="92"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Lln-35-qTm">
@@ -88,12 +88,41 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="RdF-ZJ-2ts"/>
+                        <segue destination="ZEE-jT-lKK" kind="relationship" relationship="rootViewController" id="91R-IO-Z0V"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lgp-xS-rst" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="489.60000000000002" y="92.653673163418304"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="7nf-wH-OCd">
+            <objects>
+                <viewController id="ZEE-jT-lKK" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mt2-c2-3Rq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N0m-I0-r1Q">
+                                <rect key="frame" x="170" y="318" width="35" height="30"/>
+                                <state key="normal" title="Push"/>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="push" id="ASW-5U-nPR"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="N0m-I0-r1Q" firstAttribute="centerY" secondItem="mt2-c2-3Rq" secondAttribute="centerY" id="W3Z-VD-2EU"/>
+                            <constraint firstItem="N0m-I0-r1Q" firstAttribute="centerX" secondItem="mt2-c2-3Rq" secondAttribute="centerX" id="fR7-xL-lNQ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="h3t-R0-syf"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="RIi-sN-uEy"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="k2R-ou-wsb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1212" y="92"/>
         </scene>
     </scenes>
     <resources>

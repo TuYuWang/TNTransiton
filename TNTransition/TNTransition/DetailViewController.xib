@@ -27,12 +27,16 @@
                     </constraints>
                 </imageView>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gWR-uB-5bS">
-                    <rect key="frame" x="0.0" y="327" width="375" height="340"/>
+                    <rect key="frame" x="0.0" y="327" width="375" height="288"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qwu-m3-yCv">
+                    <rect key="frame" x="170" y="630" width="35" height="30"/>
+                    <state key="normal" title="Push"/>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -40,9 +44,13 @@
                 <constraint firstItem="Ugu-cS-wtt" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="CR3-rg-2jY"/>
                 <constraint firstItem="gWR-uB-5bS" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="IPN-RV-g65"/>
                 <constraint firstItem="gWR-uB-5bS" firstAttribute="top" secondItem="Ugu-cS-wtt" secondAttribute="bottom" constant="8" id="K01-1Y-0kK"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Qwu-m3-yCv" secondAttribute="bottom" constant="7" id="TYo-nQ-vu1"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="gWR-uB-5bS" secondAttribute="bottom" constant="52" id="ZGd-z0-I9K"/>
+                <constraint firstItem="Qwu-m3-yCv" firstAttribute="top" secondItem="gWR-uB-5bS" secondAttribute="bottom" constant="15" id="blJ-Qf-47F"/>
+                <constraint firstItem="Qwu-m3-yCv" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="170" id="hk7-Xn-TEG"/>
                 <constraint firstItem="gWR-uB-5bS" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="peh-x7-OIs"/>
                 <constraint firstItem="Ugu-cS-wtt" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="tzP-cN-qXv"/>
-                <constraint firstItem="gWR-uB-5bS" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="uRP-dS-CeE"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Qwu-m3-yCv" secondAttribute="trailing" constant="170" id="y1g-NR-NWc"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="-15.5" y="-150.5"/>

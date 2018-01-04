@@ -46,6 +46,7 @@ extension TNTransition where Base: UIViewController {
     func setup() {
         guard let navigationController = base.navigationController else { return }
         navigationController.delegate = base
+        navigationController.interactivePopGestureRecognizer?.delegate = base;
     }
     
     /// setup the transition of viewController
@@ -65,8 +66,6 @@ extension TNTransition where Base: UIViewController {
     
     //transition by magic
     fileprivate func magic(by: Bool, using: UIViewControllerContextTransitioning) {
-        print("magic: " + "\(by)")
-        
         if by {
             magicReverse(using: using)
         }else
@@ -77,7 +76,6 @@ extension TNTransition where Base: UIViewController {
     
     //transition by page
     fileprivate func page(by: Bool, using: UIViewControllerContextTransitioning) {
-        print("page: " + "\(by)")
         if by {
             pageReverse(using: using)
         }else
@@ -88,7 +86,6 @@ extension TNTransition where Base: UIViewController {
     
     //transition by circle
     fileprivate func circle(by: Bool, using: UIViewControllerContextTransitioning) {
-        print("page: " + "\(by)")
          base.tn_transitionContext = using
         if by {
             circleReverse(using: using)
@@ -371,6 +368,10 @@ extension UIViewController: UIViewControllerAnimatedTransitioning {
         }
     }
     
+    
+}
+
+extension UIViewController: UIGestureRecognizerDelegate {
     
 }
 
